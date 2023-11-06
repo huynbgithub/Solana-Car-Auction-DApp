@@ -1,20 +1,10 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Eu3pnSQvXw3jhLeyBcDdkY6Y6m6pD8vP4to5SmdtZcXh");
+declare_id!("pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf");
 
 #[program]
 pub mod vehicle_factory {
     use super::*;
-
-    // pub fn initialize(ctx: Context<VehicleFactory>) -> Result<()> {
-    //     let vehicle_factory = &mut ctx.accounts.vehicle_factory;
-    //     let owner = &mut ctx.accounts.signer;
-
-    //     vehicle_factory.deployed_vehicles = Vec::new();
-    //     vehicle_factory.owner = *owner.key;
-
-    //     Ok(())
-    // }
 
     pub fn create_vehicle(
         ctx: Context<CreateVehicle>,
@@ -37,27 +27,6 @@ pub mod vehicle_factory {
         Ok(())
     }
 }
-
-// #[derive(Accounts)]
-// pub struct VehicleFactory<'info> {
-//     #[account(
-//         init,
-//         payer = signer,
-//         space = 2000
-//     )]
-//     pub vehicle_factory: Account<'info, VehicleFactoryData>,
-
-//     #[account(mut)]
-//     pub signer: Signer<'info>,
-
-//     pub system_program: Program<'info, System>,
-// }
-
-// #[account]
-// pub struct VehicleFactoryData {
-//     owner: Pubkey,
-//     deployed_vehicles: Vec<Pubkey>,
-// }
 
 #[derive(Accounts)]
 pub struct CreateVehicle<'info> {
