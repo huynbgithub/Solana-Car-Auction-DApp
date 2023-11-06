@@ -1,16 +1,48 @@
-import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import { SolanaCarAuctionDapp } from "../target/types/solana_car_auction_dapp";
+import * as anchor from '@coral-xyz/anchor'
+import { Program } from '@coral-xyz/anchor'
+import { Keypair } from '@solana/web3.js'
+import { expect } from 'chai'
+import { VehicleFactory } from '../target/types/vehicle_factory'
 
-describe("solana-car-auction-dapp", () => {
-  // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+describe('vehicle_factory', () => {
+  const provider = anchor.AnchorProvider.env()
+  anchor.setProvider(provider)
 
-  const program = anchor.workspace.SolanaCarAuctionDapp as Program<SolanaCarAuctionDapp>;
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-});
+  const vehicleFactoryProgram = anchor.workspace.VehicleFactory as Program<VehicleFactory>
+
+
+  const vehicleKeypair1 = Keypair.generate()
+  const vehicleKeypair2 = Keypair.generate()
+  const vehicleKeypair3 = Keypair.generate()
+
+  // it('Does CPI1!', async () => {
+  //   await vehicleFactoryProgram.methods
+  //     .initialize()
+  //     .accounts({
+  //       vehicleFactory: vehicleKeypair1.publicKey,
+  //       signer: provider.wallet.publicKey,
+  //     })
+  //     .signers([vehicleKeypair1])
+  //     .rpc()
+  // });
+
+  it('Does CPI2!', async () => {
+    await vehicleFactoryProgram.methods
+      .createVehicle({owner: "a", seatCapacity:1, firstRegistrationDate: new anchor.BN(1)}, new anchor.BN(1), [])
+      .accounts({
+        vehicle: vehicleKeypair2.publicKey,
+        signer: provider.wallet.publicKey,
+      })
+      .signers([vehicleKeypair2])
+      .rpc()
+
+
+    expect(
+      (
+        await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)
+      ).startingPrice.toNumber()
+      ).to.equal(1)
+
+  })
+})
