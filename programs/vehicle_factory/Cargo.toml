@@ -17,4 +17,3 @@ default = []
 
 [dependencies]
 anchor-lang = "0.29.0"
-vehicle = { path = "../vehicle", features = ["cpi"]}
