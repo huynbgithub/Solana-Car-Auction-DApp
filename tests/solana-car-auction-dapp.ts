@@ -29,7 +29,7 @@ describe('vehicle_factory', () => {
 
   it('Does CPI2!', async () => {
     await vehicleFactoryProgram.methods
-      .createVehicle({owner: "a", seatCapacity:1, firstRegistrationDate: new anchor.BN(1)}, new anchor.BN(1), [])
+      .createVehicle({ownerFullName: "a", seatCapacity:1, firstRegistrationDate: new anchor.BN(1)}, new anchor.BN(1), [])
       .accounts({
         vehicle: vehicleKeypair2.publicKey,
         signer: provider.wallet.publicKey,

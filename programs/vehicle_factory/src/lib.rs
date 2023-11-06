@@ -58,17 +58,17 @@ pub struct VehicleData {
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct VehicleProperties {
     owner_full_name: String,
-    owner_address: String,
-    brand: String,
-    vehicle_type: String,
-    color: String,
+    // owner_address: String,
+    // brand: String,
+    // vehicle_type: String,
+    // color: String,
     seat_capacity: u16,
-    origin: String,
-    license_plate: String,
-    engine_number: String,
-    chassis_number: String,
-    model_code: String,
-    capacity: u32,
+    // origin: String,
+    // license_plate: String,
+    // engine_number: String,
+    // chassis_number: String,
+    // model_code: String,
+    // capacity: u32,
     first_registration_date: u128,
 }
 
