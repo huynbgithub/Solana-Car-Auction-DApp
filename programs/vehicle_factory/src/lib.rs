@@ -44,7 +44,7 @@ pub mod vehicle_factory {
         Ok(())
     }
 
-    pub fn create_bid(ctx: Context<CreateBid>, quantity: u128) -> Result<()> {
+    pub fn create_bid(ctx: Context<CreateBid>, quantity: u64) -> Result<()> {
         let vehicle = &mut ctx.accounts.vehicle;
 
         let bidder = &mut ctx.accounts.authority;
@@ -61,6 +61,22 @@ pub mod vehicle_factory {
         );
 
         vehicle.bids_size += 1;
+
+        let from_account = &ctx.accounts.authority;
+        let to_account = &ctx.accounts.to_account;
+
+        // Create the transfer instruction
+        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(from_account.key, to_account.key, quantity * 1000000000);
+
+        // Invoke the transfer instruction
+        anchor_lang::solana_program::program::invoke(
+            &transfer_instruction,
+            &[
+                from_account.to_account_info(),
+                to_account.clone(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+        )?;
 
         Ok(())
     }
@@ -105,7 +121,7 @@ pub struct SetStart<'info> {
 
 #[derive(Accounts)]
 pub struct AllUsers<'info> {
-    #[account()]
+    #[account(mut)]
     pub vehicle: Account<'info, VehicleData>,
 }
 
@@ -115,11 +131,15 @@ pub struct CreateBid<'info> {
     (
         mut,
         constraint = vehicle.is_start == true,
-        constraint = authority.key() == vehicle.owner_address
+        constraint = authority.key() != vehicle.owner_address
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
+    #[account(mut)]
+    /// CHECK: This is not dangerous because we don't read or write from this account
+    pub to_account: AccountInfo<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[account]
@@ -155,6 +175,6 @@ pub struct VehicleProperties {
 pub struct Bid {
     index: u32,
     bidder: Pubkey,
-    quantity: u128,
+    quantity: u64,
     is_withdrawed: bool,
 }

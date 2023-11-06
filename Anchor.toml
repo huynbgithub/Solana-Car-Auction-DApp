@@ -7,11 +7,17 @@ skip-lint = false
 [programs.localnet]
 vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
 
+[programs.devnet]
+vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
+
+[programs.testnet]
+vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "localnet"
 wallet = "/home/huynb/.config/solana/id.json"
 
 [scripts]
