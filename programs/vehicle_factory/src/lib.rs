@@ -88,6 +88,7 @@ pub struct ApproveVehicle<'info> {
         constraint = authority.key() == Pubkey::from_str("81WL6cNBWGhQnwgCsbkGhxaqA4gK3ut928H5fyP8KJmD").unwrap(), 
     )]
     pub vehicle: Account<'info, VehicleData>,
+    #[account(mut)]
     pub authority: Signer<'info>,
 }
 
@@ -98,6 +99,7 @@ pub struct SetStart<'info> {
         constraint = authority.key() == vehicle.owner_address, 
     )]
     pub vehicle: Account<'info, VehicleData>,
+    #[account(mut)]
     pub authority: Signer<'info>,
 }
 
@@ -112,9 +114,11 @@ pub struct CreateBid<'info> {
     #[account
     (
         mut,
-        constraint = authority.key() != vehicle.owner_address
+        constraint = vehicle.is_start == true,
+        constraint = authority.key() == vehicle.owner_address
     )]
     pub vehicle: Account<'info, VehicleData>,
+    #[account(mut)]
     pub authority: Signer<'info>,
 }
 

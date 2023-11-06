@@ -45,7 +45,23 @@ describe('vehicle_factory', () => {
       )
 
     await vehicleFactoryProgram.methods
+    .setStart(true)
+    .accounts({
+      vehicle: vehicleKeypair2.publicKey,
+      authority: provider.wallet.publicKey,
+    })
+    .rpc()
+
+    await vehicleFactoryProgram.methods
     .createBid(new anchor.BN(5))
+    .accounts({
+      vehicle: vehicleKeypair2.publicKey,
+      authority: provider.wallet.publicKey,
+    })
+    .rpc()
+
+    await vehicleFactoryProgram.methods
+    .createBid(new anchor.BN(9))
     .accounts({
       vehicle: vehicleKeypair2.publicKey,
       authority: provider.wallet.publicKey,
