@@ -53,12 +53,14 @@ pub mod vehicle_factory {
 
         vehicle.bids.push(
             Bid {
-                index: bids_size + 1, 
+                index: bids_size + 1,
                 bidder: bidder.key(),
-                quantity: quantity, 
+                quantity: quantity,
                 is_withdrawed: false
             }
         );
+
+        vehicle.bids_size += 1;
 
         Ok(())
     }

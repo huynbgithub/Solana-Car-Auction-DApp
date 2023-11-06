@@ -40,20 +40,20 @@ describe('vehicle_factory', () => {
       .rpc()
 
 
-    console.log(
-        (await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)).isApproved
-    )
+      console.log(
+        (await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)).bids
+      )
 
     await vehicleFactoryProgram.methods
-    .approveVehicle()
+    .createBid(new anchor.BN(5))
     .accounts({
       vehicle: vehicleKeypair2.publicKey,
-      authority: "81WL6cNBWGhQnwgCsbkGhxaqA4gK3ut928H5fyP8KJmT",
+      authority: provider.wallet.publicKey,
     })
     .rpc()
 
     console.log(
-      (await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)).isApproved
-  )
+      (await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)).bids
+    )
   })
 })
