@@ -4,7 +4,7 @@ import PublicRoute from "./PublicRoute"
 import PublicLayout from "../components/PublicLayout";
 import Home from "../page/Home"
 // import Detail from "../page/Detail";
-// import Wallet from "../page/Wallet";
+import Wallet from "../page/Wallet";
 // import Assets from "../page/Assets";
 // import Admin from "../page/Admin";
 
@@ -23,13 +23,13 @@ const publicRoute = [
     //     exact: true,
     //     restrict: true,
     // },
-    // {
-    //     index: true,
-    //     path: "wallet",
-    //     component: <Wallet />,
-    //     exact: true,
-    //     restrict: true,
-    // },
+    {
+        index: true,
+        path: "wallet",
+        component: <Wallet />,
+        exact: true,
+        restrict: true,
+    },
     // {
     //     index: true,
     //     path: "assets",

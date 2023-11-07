@@ -1,57 +1,58 @@
 import React, { useContext, useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import Web3 from "web3";
-// import { Web3Context } from "../App";
+import { Web3Context } from "../App";
 
 export default function Navbar() {
 
     // const { web3, setWeb3 } = useContext(Web3Context);
-    // const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
+    const { account, setAccount } = useContext(Web3Context);
+    const { balance, setBalance } = useContext(Web3Context);
 
-    // const detectCurrentProvider = () => {
-    //     let provider;
-    //     if (window.ethereum) {
-    //         provider = window.ethereum;
-    //         // } else 
-    //         // if (window.web3) {
-    //         //     provider = window.web3.currentProvider;
-    //     } else {
-    //         console.log("Non-ethereum browser detected. You should install Metamask");
-    //     }
-    //     return provider;
-    // };
+    const detectCurrentProvider = () => {
+        if ('phantom' in window) {
+            const provider = window.phantom?.solana;
 
-    // const onConnect = async () => {
-    //     try {
-    //         const currentProvider = detectCurrentProvider();
-    //         if (currentProvider) {
-    //             await currentProvider.request({ method: 'eth_requestAccounts' });
-    //             const web3 = new Web3(currentProvider);
+            if (provider?.isPhantom) {
+                return provider;
+            }
+        }
 
-    //             await setWeb3(web3);
+        window.open('https://phantom.app/', '_blank');
+    };
 
-    //             const account = (await web3.eth.getAccounts())[0];
+    const onConnect = async () => {
+        try {
+            const currentProvider = detectCurrentProvider();
+            if (currentProvider.isPhantom) {
+                console.log("Phantom wallet found");
 
-    //             await setAccount(account);
+                const res = await currentProvider.request({ method: "connect" });
+                // const web3 = new Web3(currentProvider);
 
-    //             const ethBalance = await web3.eth.getBalance(account);
-    //             const balance = web3.utils.fromWei(ethBalance, "ether");
+                // await setWeb3(web3);
 
-    //             await setBalance(balance);
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
+                const account = res.publicKey.toString();
 
-    // useEffect(() => {
-    //     onConnect();
-    // }, []);
+                await setAccount(account);
+
+                // const ethBalance = await web3.eth.getBalance(account);
+                // const balance = web3.utils.fromWei(ethBalance, "ether");
+
+                // await setBalance(balance);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        onConnect();
+    }, []);
 
     return (
         <nav className="navbar navbar-expand-sm">
-            {/* <div className="container-fluid">
+            <div className="container-fluid">
                 <h1 className="navbar-brand text-success">Solana Car Auction</h1>
                 <nav className="navbar navbar-expand-sm justify-content-center">
                     <ul className="navbar-nav">
@@ -63,9 +64,9 @@ export default function Navbar() {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/wallet">Wallet</Link>
                                 </li>
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <Link className="nav-link" to="/assets">My Assets</Link>
-                                </li>
+                                </li> */}
                             </>
                         )}
                         {account && account == "0x39c4fBD15e23dFc8e4d3920fb3Ff2d28DA21215D" &&
@@ -81,7 +82,7 @@ export default function Navbar() {
                 {account && (
                     <button className="btn btn-secondary">Wallet Connected Successfully</button>
                 )}
-            </div> */}
+            </div>
         </nav >
     );
 };
