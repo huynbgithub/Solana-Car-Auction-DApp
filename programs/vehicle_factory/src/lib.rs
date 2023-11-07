@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use std::str::FromStr;
 
-declare_id!("pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf");
+declare_id!("7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD");
 
 #[program]
 pub mod vehicle_factory {

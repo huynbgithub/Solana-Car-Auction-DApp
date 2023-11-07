@@ -5,13 +5,13 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
+vehicle_factory = "7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD"
 
 [programs.devnet]
-vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
+vehicle_factory = "7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD"
 
 [programs.testnet]
-vehicle_factory = "pPYAk8suZZd8xqyVs49rugZztvfV7a8E7AJuvmQHRLf"
+vehicle_factory = "7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD"
 
 [registry]
 url = "https://api.apr.dev"
