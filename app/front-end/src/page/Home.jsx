@@ -38,7 +38,7 @@ export default function Home() {
                 /> */}
                 <div>
                     <Dropdown className="float-end">
-                        <Dropdown.Toggle variant='outline-danger' id='dropdown'>
+                        <Dropdown.Toggle variant='outline-success' id='dropdown'>
                             <span>Filter Auction Status</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>

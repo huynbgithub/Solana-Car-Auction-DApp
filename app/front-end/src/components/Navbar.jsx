@@ -76,7 +76,7 @@ export default function Navbar() {
                     </ul>
                 </nav>
                 {!account && (
-                    <button className="btn btn-danger" onClick={onConnect}>Connect Wallet</button>
+                    <button className="btn btn-success" onClick={onConnect}>Connect Wallet</button>
                 )}
                 {account && (
                     <button className="btn btn-secondary">Wallet Connected Successfully</button>
