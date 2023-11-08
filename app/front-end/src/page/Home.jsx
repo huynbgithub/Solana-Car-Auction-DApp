@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 // import { getDeployedVehicleDatas } from '../contracts/VehicleFactoryContract'
-// import { Web3Context } from "../App";
+import { Web3Context } from "../App";
 // import AllVehicleCard from '../components/AllVehicleCard'
 // import NotificationAlert from '../components/NotificationAlert'
 import { Dropdown } from 'react-bootstrap';
+import '@solana/web3.js'
 
 export default function Home() {
 
     // const { web3, setWeb3 } = useContext(Web3Context);
-    // const { account, setAccount } = useContext(Web3Context);
+    const { account, setAccount } = useContext(Web3Context);
     // const { balance, setBalance } = useContext(Web3Context);
 
     // const [cars, setCars] = useState(null);
