@@ -4,7 +4,19 @@ import { Web3Context } from "../App";
 // import AllVehicleCard from '../components/AllVehicleCard'
 // import NotificationAlert from '../components/NotificationAlert'
 import { Dropdown } from 'react-bootstrap';
-import '@solana/web3.js'
+import * as anchor from '@coral-xyz/anchor'
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
+import idl from '../idl/vehicle_factory.json'
+
+const { SystemProgram, Keypair } = anchor.web3
+let myAccount = Keypair.generate()
+const programID = new PublicKey(idl.metadata.address)
+const network = clusterApiUrl('devnet')
+const opts = {
+    a: 'processed'
+}
+
+console.log(myAccount)
 
 export default function Home() {
 
@@ -12,17 +24,30 @@ export default function Home() {
     const { account, setAccount } = useContext(Web3Context);
     // const { balance, setBalance } = useContext(Web3Context);
 
-    // const [cars, setCars] = useState(null);
+    const getProvider = () => {
+        const connection = new Connection(network, opts.a)
+        const provider = new anchor.AnchorProvider(
+            connection,
+            window.solana,
+            opts.a
+        )
+        console.log(provider)
+        return provider
+    }
+
+    const [cars, setCars] = useState(null);
     // const [filter, setFilter] = useState(true);
 
-    // useEffect(() => {
-    //     loadCars();
-    // }, [cars]);
+    useEffect(() => {
+        loadCars();
+    }, [cars]);
 
-    // async function loadCars() {
-    //     const carsData = await getDeployedVehicleDatas(web3, account).catch(error => console.log(error));
-    //     setCars(carsData);
-    // }
+    async function loadCars() {
+        const provider = getProvider();
+        const program = new anchor.Program(idl, programID, provider)
+        const carsData = await program.account.vehicleData.all().catch(error => console.log(error));
+        // setCars(carsData);
+    }
 
     // const notificationRef = useRef(null)
     // const enableShow = (alert) => (notificationRef.current).setShow(alert)
