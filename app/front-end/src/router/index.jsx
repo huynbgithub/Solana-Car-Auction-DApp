@@ -5,7 +5,7 @@ import PublicLayout from "../components/PublicLayout";
 import Home from "../page/Home"
 // import Detail from "../page/Detail";
 import Wallet from "../page/Wallet";
-// import Assets from "../page/Assets";
+import Assets from "../page/Assets";
 // import Admin from "../page/Admin";
 
 const publicRoute = [
@@ -30,13 +30,13 @@ const publicRoute = [
         exact: true,
         restrict: true,
     },
-    // {
-    //     index: true,
-    //     path: "assets",
-    //     component: <Assets />,
-    //     exact: true,
-    //     restrict: true,
-    // },
+    {
+        index: true,
+        path: "assets",
+        component: <Assets />,
+        exact: true,
+        restrict: true,
+    },
     // {
     //     index: true,
     //     path: "admin",

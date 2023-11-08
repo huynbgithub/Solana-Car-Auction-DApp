@@ -1,11 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import Web3 from "web3";
 import { Web3Context } from "../App";
+
+import * as anchor from '@coral-xyz/anchor'
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
+import idl from '../idl/vehicle_factory.json'
+const programID = new PublicKey(idl.metadata.address)
+
+const network = clusterApiUrl('devnet')
 
 export default function Navbar() {
 
-    // const { web3, setWeb3 } = useContext(Web3Context);
+    const { program, setProgram } = useContext(Web3Context);
     const { account, setAccount } = useContext(Web3Context);
     const { balance, setBalance } = useContext(Web3Context);
 
@@ -23,24 +29,32 @@ export default function Navbar() {
 
     const onConnect = async () => {
         try {
+
             const currentProvider = detectCurrentProvider();
+
             if (currentProvider.isPhantom) {
                 console.log("Phantom wallet found");
 
                 const res = await currentProvider.request({ method: "connect" });
-                // const web3 = new Web3(currentProvider);
-
-                // await setWeb3(web3);
 
                 const account = res.publicKey;
 
                 await setAccount(account);
 
-                // const ethBalance = await web3.eth.getBalance(account);
-                // const balance = web3.utils.fromWei(ethBalance, "ether");
+                const connection = new Connection(network, "processed")
 
-                // await setBalance(balance);
+                const provider = new anchor.AnchorProvider(
+                    connection,
+                    window.solana,
+                    "processed"
+                )
+
+                const program = new anchor.Program(idl, programID, provider)
+
+                setProgram(program)
+
             }
+
         } catch (err) {
             console.log(err);
         }
@@ -59,17 +73,17 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/home">Home</Link>
                         </li>
-                        {account && account != "0x39c4fBD15e23dFc8e4d3920fb3Ff2d28DA21215D" && (
+                        {account && account != "HXLoUNAPWyqq28DCA34UhQbA57EsUBJsXyVHgtU98HPb" && (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/wallet">Wallet</Link>
                                 </li>
-                                {/* <li className="nav-item">
+                                <li className="nav-item">
                                     <Link className="nav-link" to="/assets">My Assets</Link>
-                                </li> */}
+                                </li>
                             </>
                         )}
-                        {account && account == "0x39c4fBD15e23dFc8e4d3920fb3Ff2d28DA21215D" &&
+                        {account && account == "HXLoUNAPWyqq28DCA34UhQbA57EsUBJsXyVHgtU98HPb" &&
                             <li className="nav-item">
                                 <Link className="nav-link" to="/admin">Admin</Link>
                             </li>
