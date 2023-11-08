@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import Web3 from "web3";
 import { Web3Context } from "../App";
+import '@solana/web3.js'
+
+declare const window: any;
 
 export default function Navbar() {
 
-    // const { web3, setWeb3 } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    const { balance, setBalance } = useContext(Web3Context);
+    const account = useContext(Web3Context)?.account as string | null;
+    const setAccount = useContext(Web3Context)?.setAccount as React.Dispatch<React.SetStateAction<string | null>>;
 
     const detectCurrentProvider = () => {
         if ('phantom' in window) {
@@ -28,18 +29,10 @@ export default function Navbar() {
                 console.log("Phantom wallet found");
 
                 const res = await currentProvider.request({ method: "connect" });
-                // const web3 = new Web3(currentProvider);
 
-                // await setWeb3(web3);
-
-                const account = res.publicKey;
+                const account = res.publicKey.toString();
 
                 await setAccount(account);
-
-                // const ethBalance = await web3.eth.getBalance(account);
-                // const balance = web3.utils.fromWei(ethBalance, "ether");
-
-                // await setBalance(balance);
             }
         } catch (err) {
             console.log(err);

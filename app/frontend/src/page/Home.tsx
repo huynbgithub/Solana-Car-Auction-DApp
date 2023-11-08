@@ -5,34 +5,29 @@ import { Web3Context } from "../App";
 // import NotificationAlert from '../components/NotificationAlert'
 import { Dropdown } from 'react-bootstrap';
 import * as anchor from '@coral-xyz/anchor'
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
+import { ConfirmOptions, Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'
 import idl from '../idl/vehicle_factory.json'
+import { IDL } from "../idl/vehicle_factory"
 
-import * as buffer from "buffer";
-window.Buffer = buffer.Buffer;
+declare const window: any;
 
 const { SystemProgram, Keypair } = anchor.web3
 let myAccount = Keypair.generate()
 const programID = new PublicKey(idl.metadata.address)
 const network = clusterApiUrl('devnet')
-const opts = {
-    a: 'processed'
-}
 
-console.log(myAccount)
+// console.log(myAccount)
 
 export default function Home() {
 
-    // const { web3, setWeb3 } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
+    const account = useContext(Web3Context)?.account as string;
 
     const getProvider = () => {
-        const connection = new Connection(network, opts.a)
+        const connection = new Connection(network, 'processed' as ConfirmOptions)
         const provider = new anchor.AnchorProvider(
             connection,
             window.solana,
-            opts.a
+            'processed' as ConfirmOptions
         )
         console.log(provider)
         return provider
@@ -47,20 +42,19 @@ export default function Home() {
 
     async function loadCars() {
         const provider = getProvider();
-        const program = new anchor.Program(idl, programID, provider)
+        const program = new anchor.Program(IDL, programID, provider)
         console.log(programID)
         console.log(program)
-        // await program.methods
-        //     .createVehicle({ ownerFullName: "b", seatCapacity: 2, firstRegistrationDate: new anchor.BN(2) }, new anchor.BN(3), ["c.img", "d.img"])
-        //     .accounts({
-        //         vehicle: myAccount.publicKey,
-        //         owner: account,
-        //         systemProgram: SystemProgram.programId
-        //     })
-        //     .signers([myAccount])
-        //     .rpc().catch(error => console.log(error));
-        const carsData = await program.account.vehicleData.fetch("898oEESEjynwy4Ro13TGGg8E9Z558iFdgipAfnqLcH7H").catch(error => console.log(error));
-        console.log(carsData)
+        await program.methods
+            .createVehicle({ ownerFullName: "b", seatCapacity: 2, firstRegistrationDate: new anchor.BN(2) }, new anchor.BN(3), ["c.img", "d.img"])
+            .accounts({
+                vehicle: myAccount.publicKey,
+                owner: "HXLoUNAPWyqq28DCA34UhQbA57EsUBJsXyVHgtU98HPb",
+                systemProgram: SystemProgram.programId
+            })
+            .signers([myAccount])
+            .rpc().catch(error => console.log(error));
+        const carsData = await program.account.vehicleData.fetch(myAccount.publicKey).catch(error => console.log(error));
         // setCars(carsData);
     }
 

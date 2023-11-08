@@ -17,7 +17,7 @@ vehicle_factory = "7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/huynb/.config/solana/id.json"
 
 [scripts]
