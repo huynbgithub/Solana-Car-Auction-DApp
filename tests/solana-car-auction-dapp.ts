@@ -54,7 +54,7 @@ describe('vehicle_factory', () => {
     //   (await vehicleFactoryProgram.account.vehicleData.fetch(vehicleKeypair2.publicKey)).bids
     // )
     console.log(
-      await vehicleFactoryProgram.account.vehicleData.fetch("898oEESEjynwy4Ro13TGGg8E9Z558iFdgipAfnqLcH7H")
+      await vehicleFactoryProgram.account.vehicleData.all()
     )
   })
 })

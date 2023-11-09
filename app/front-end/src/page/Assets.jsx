@@ -4,7 +4,7 @@ import { Button, Card, Form } from 'react-bootstrap'
 import CreateVehicleModal from '../components/CreateVehicleModal'
 import { Link } from "react-router-dom";
 import { Web3Context } from "../App";
-// import AssetVehicleCard from '../components/AssetVehicleCard'
+import AssetVehicleCard from '../components/AssetVehicleCard'
 // import NotificationAlert from '../components/NotificationAlert'
 
 export default function Assets() {
@@ -15,14 +15,16 @@ export default function Assets() {
 
     const [cars, setCars] = useState(null);
 
-    // useEffect(() => {
-    //     loadCars();
-    // }, [cars]);
+    useEffect(() => {
+        loadCars();
+    }, [account]);
 
-    // async function loadCars() {
-    //     const carsData = await getOwnedDeployedVehicleDatas(web3, account).catch(error => console.log(error));
-    //     setCars(carsData);
-    // }
+    async function loadCars() {
+        if (program) {
+            const carsData = await program.account.vehicleData.all().catch(error => console.log(error));
+            setCars(carsData);
+        }
+    }
 
     // const notificationRef = useRef(null)
     // const enableShow = (alert) => (notificationRef.current).setShow(alert)
@@ -36,12 +38,12 @@ export default function Assets() {
                 <CreateVehicleModal />
                 {/* <NotificationAlert
                     ref={notificationRef}
-                />
+                /> */}
                 {cars && cars.map((car, index) => (
                     <div className="col-3 mt-3" key={index}>
                         <AssetVehicleCard data={car} />
                     </div>
-                ))} */}
+                ))}
             </div>
         </div>
     );

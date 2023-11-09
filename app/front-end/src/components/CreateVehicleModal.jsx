@@ -33,17 +33,17 @@ const CreateVehicleModal = () => {
     const formik = useFormik({
         initialValues: {
             ownerFullName: 'Nguyen Van A',
-            // ownerAddress: '123 Main Street',
-            // brand: 'Toyota',
-            // vehicleType: 'Sedan',
-            // color: 'Blue',
+            ownerAddress: '123 Main Street',
+            brand: 'Toyota',
+            vehicleType: 'Sedan',
+            color: 'Blue',
             seatCapacity: 4,
-            // origin: 'USA',
-            // licensePlate: '12AB-34567',
-            // engineNumber: 'ABC123456789',
-            // chassisNumber: 'XYZ987654321',
-            // modelCode: 'M123',
-            // capacity: 4,
+            origin: 'USA',
+            licensePlate: '12AB-34567',
+            engineNumber: 'ABC123456789',
+            chassisNumber: 'XYZ987654321',
+            modelCode: 'M123',
+            capacity: 4,
             firstRegistrationDate: '2023-11-08',
             images: null,
             startingPrice: 1,
@@ -51,27 +51,27 @@ const CreateVehicleModal = () => {
 
         validationSchema: Yup.object({
             ownerFullName: Yup.string().required('Owner Full Name is required'),
-            // ownerAddress: Yup.string().required('Owner Address is required'),
-            // brand: Yup.string().required('Brand is required'),
-            // vehicleType: Yup.string().required('Vehicle Type is required'),
-            // color: Yup.string().required('Color is required'),
+            ownerAddress: Yup.string().required('Owner Address is required'),
+            brand: Yup.string().required('Brand is required'),
+            vehicleType: Yup.string().required('Vehicle Type is required'),
+            color: Yup.string().required('Color is required'),
             seatCapacity: Yup.number()
                 .min(1, 'Seat Capacity must be at least 1')
                 .required('Seat Capacity is required'),
-            // origin: Yup.string().required('Origin is required'),
-            // licensePlate: Yup.string()
-            //     .matches(/^\d{2}[A-Z0-9]{1,2}-\d{5}$/, 'License Plate should be in correct format')
-            //     .required('License Plate is required'),
-            // engineNumber: Yup.string()
-            //     .matches(/^[A-Z0-9]{1,12}$/, 'Engine Number should be 1-12 uppercase letters or digits')
-            //     .required('Engine Number is required'),
-            // chassisNumber: Yup.string()
-            //     .matches(/^[A-Z0-9]{1,17}$/, 'Chassis Number should be 1-17 uppercase letters or digits')
-            //     .required('Chassis Number is required'),
-            // modelCode: Yup.string().required('Model Code is required'),
-            // capacity: Yup.number()
-            //     .min(1, 'Capacity must be at least 1')
-            //     .required('Capacity is required'),
+            origin: Yup.string().required('Origin is required'),
+            licensePlate: Yup.string()
+                .matches(/^\d{2}[A-Z0-9]{1,2}-\d{5}$/, 'License Plate should be in correct format')
+                .required('License Plate is required'),
+            engineNumber: Yup.string()
+                .matches(/^[A-Z0-9]{1,12}$/, 'Engine Number should be 1-12 uppercase letters or digits')
+                .required('Engine Number is required'),
+            chassisNumber: Yup.string()
+                .matches(/^[A-Z0-9]{1,17}$/, 'Chassis Number should be 1-17 uppercase letters or digits')
+                .required('Chassis Number is required'),
+            modelCode: Yup.string().required('Model Code is required'),
+            capacity: Yup.number()
+                .min(1, 'Capacity must be at least 1')
+                .required('Capacity is required'),
             startingPrice: Yup.number()
                 .min(1, 'Starting Price must be equal or more than 1 SOL')
                 .required('Starting Price is required'),
@@ -99,7 +99,24 @@ const CreateVehicleModal = () => {
 
                 if (program) {
                     await program.methods
-                        .createVehicle({ ownerFullName: values.ownerFullName, seatCapacity: values.seatCapacity, firstRegistrationDate: new anchor.BN(1) }, new anchor.BN(values.startingPrice), vehicleImages)
+                        .createVehicle(
+                            {
+                                ownerFullName: values.ownerFullName,
+                                ownerAddress: values.ownerAddress,
+                                brand: values.brand,
+                                vehicleType: values.vehicleType,
+                                color: values.color,
+                                seatCapacity: values.seatCapacity,
+                                origin: values.origin,
+                                licensePlate: values.licensePlate,
+                                engineNumber: values.engineNumber,
+                                chassisNumber: values.chassisNumber,
+                                modelCode: values.modelCode,
+                                capacity: values.capacity,
+                                firstRegistrationDate: values.firstRegistrationDate,
+                            },
+                            new anchor.BN(values.startingPrice), vehicleImages
+                        )
                         .accounts({
                             vehicle: myAccount.publicKey,
                             owner: account,
@@ -163,7 +180,7 @@ const CreateVehicleModal = () => {
                                         </p>
                                     ) : null}
                                 </Col>
-                                {/* <Col lg={4}>
+                                <Col lg={4}>
                                     <FloatingLabel
                                         label="Owner Address"
                                     >
@@ -237,7 +254,7 @@ const CreateVehicleModal = () => {
                                             <small> {formik.errors.color} </small>
                                         </p>
                                     ) : null}
-                                </Col> */}
+                                </Col>
                                 <Col lg={4}>
                                     <FloatingLabel
                                         label="Seat Capacity"
@@ -259,7 +276,7 @@ const CreateVehicleModal = () => {
                                 </Col>
                             </Row>
                             <Row className="mt-3">
-                                {/* <Col lg={4}>
+                                <Col lg={4}>
                                     <FloatingLabel
 
                                         label="Origin"
@@ -371,7 +388,7 @@ const CreateVehicleModal = () => {
                                             <small> {formik.errors.capacity} </small>
                                         </p>
                                     ) : null}
-                                </Col> */}
+                                </Col>
                             </Row>
                             <Row className="mt-3">
                                 <InputGroup className="mb-3">

@@ -73,7 +73,7 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/home">Home</Link>
                         </li>
-                        {account && account != "HXLoUNAPWyqq28DCA34UhQbA57EsUBJsXyVHgtU98HPb" && (
+                        {account && account != "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" && (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/wallet">Wallet</Link>
@@ -83,7 +83,7 @@ export default function Navbar() {
                                 </li>
                             </>
                         )}
-                        {account && account == "HXLoUNAPWyqq28DCA34UhQbA57EsUBJsXyVHgtU98HPb" &&
+                        {account && account == "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" &&
                             <li className="nav-item">
                                 <Link className="nav-link" to="/admin">Admin</Link>
                             </li>

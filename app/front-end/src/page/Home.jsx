@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 // import { getDeployedVehicleDatas } from '../contracts/VehicleFactoryContract'
 import { Web3Context } from "../App";
 import AllVehicleCard from '../components/AllVehicleCard'
-// import NotificationAlert from '../components/NotificationAlert'
+import NotificationAlert from '../components/NotificationAlert'
 import { Dropdown } from 'react-bootstrap';
 
 export default function Home() {
@@ -14,11 +14,11 @@ export default function Home() {
 
 
     const [cars, setCars] = useState(null);
-    // const [filter, setFilter] = useState(true);
+    const [filter, setFilter] = useState(true);
 
     useEffect(() => {
         loadCars();
-    }, []);
+    }, [account]);
 
     async function loadCars() {
         if (program) {
@@ -28,8 +28,8 @@ export default function Home() {
         }
     }
 
-    // const notificationRef = useRef(null)
-    // const enableShow = (alert) => (notificationRef.current).setShow(alert)
+    const notificationRef = useRef(null)
+    const enableShow = (alert) => (notificationRef.current).setShow(alert)
 
     return (
         <div className="container-fluid">
@@ -38,9 +38,9 @@ export default function Home() {
                 <p>Solana Blockchain 2023</p>
             </div>
             <div className="mt-3 row">
-                {/* <NotificationAlert
+                <NotificationAlert
                     ref={notificationRef}
-                /> */}
+                />
                 <div>
                     <Dropdown className="float-end">
                         <Dropdown.Toggle variant='outline-success' id='dropdown'>
@@ -48,16 +48,16 @@ export default function Home() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item
-                            // onClick={(event) => {
-                            //     setFilter(true)
-                            // }}
+                                onClick={(event) => {
+                                    setFilter(true)
+                                }}
                             >
                                 Started
                             </Dropdown.Item>
                             <Dropdown.Item
-                            // onClick={(event) => {
-                            //     setFilter(false)
-                            // }}
+                                onClick={(event) => {
+                                    setFilter(false)
+                                }}
                             >
                                 Not Started
                             </Dropdown.Item>
@@ -65,9 +65,9 @@ export default function Home() {
                     </Dropdown>
                 </div>
                 {cars && cars.map((car) => (
-                    // (car.isStart == filter &&
-                    <AllVehicleCard data={car} />
-                    // )
+                    (car.account.isStart == filter &&
+                        <AllVehicleCard data={car} />
+                    )
                 ))}
             </div>
         </div>

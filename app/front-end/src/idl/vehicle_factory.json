@@ -170,12 +170,52 @@
             "type": "string"
           },
           {
+            "name": "ownerAddress",
+            "type": "string"
+          },
+          {
+            "name": "brand",
+            "type": "string"
+          },
+          {
+            "name": "vehicleType",
+            "type": "string"
+          },
+          {
+            "name": "color",
+            "type": "string"
+          },
+          {
             "name": "seatCapacity",
             "type": "u16"
           },
           {
+            "name": "origin",
+            "type": "string"
+          },
+          {
+            "name": "licensePlate",
+            "type": "string"
+          },
+          {
+            "name": "engineNumber",
+            "type": "string"
+          },
+          {
+            "name": "chassisNumber",
+            "type": "string"
+          },
+          {
+            "name": "modelCode",
+            "type": "string"
+          },
+          {
+            "name": "capacity",
+            "type": "u32"
+          },
+          {
             "name": "firstRegistrationDate",
-            "type": "u128"
+            "type": "string"
           }
         ]
       }
@@ -206,6 +246,6 @@
     }
   ],
   "metadata": {
-    "address": "7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD"
+    "address": "9NfoQ6i5WqJEsD3HhJ9GonKRtvjREV8yER5DXTnp2w95"
   }
 }

@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use std::str::FromStr;
 
-declare_id!("7W48nzpFQ1t4fXg7AKwDPouFaAkByF7oKfGDsuH5wTaD");
+declare_id!("9NfoQ6i5WqJEsD3HhJ9GonKRtvjREV8yER5DXTnp2w95");
 
 #[program]
 pub mod vehicle_factory {
@@ -101,7 +101,7 @@ pub struct CreateVehicle<'info> {
 pub struct ApproveVehicle<'info> {
     #[account(
         mut, 
-        constraint = authority.key() == Pubkey::from_str("81WL6cNBWGhQnwgCsbkGhxaqA4gK3ut928H5fyP8KJmD").unwrap(), 
+        constraint = authority.key() == Pubkey::from_str("FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG").unwrap(), 
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
@@ -157,18 +157,18 @@ pub struct VehicleData {
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct VehicleProperties {
     owner_full_name: String,
-    // owner_address: String,
-    // brand: String,
-    // vehicle_type: String,
-    // color: String,
+    owner_address: String,
+    brand: String,
+    vehicle_type: String,
+    color: String,
     seat_capacity: u16,
-    // origin: String,
-    // license_plate: String,
-    // engine_number: String,
-    // chassis_number: String,
-    // model_code: String,
-    // capacity: u32,
-    first_registration_date: u128,
+    origin: String,
+    license_plate: String,
+    engine_number: String,
+    chassis_number: String,
+    model_code: String,
+    capacity: u32,
+    first_registration_date: String,
 }
 
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
