@@ -5,7 +5,7 @@ import { AuctionStatus, ApprovalStatus, ScopeReference } from '../components/Uti
 // import { exponent } from '../utils/Constants'
 import { Web3Context } from '../App'
 import { BsFillPersonVcardFill, BsCoin } from 'react-icons/bs'
-// import RegisterAuctionModal from '../components/RegisterAuctionModal'
+import RegisterAuctionModal from '../components/RegisterAuctionModal'
 import NotificationAlert from '../components/NotificationAlert'
 
 const Detail = () => {
@@ -54,11 +54,11 @@ const Detail = () => {
 
   const renderTable = () => {
     const rows = []
-    bids?.forEach(element =>
+    data?.bids.forEach(element =>
       rows.push(
         <tr>
           <td> {element.index} </td>
-          <td> <ScopeReference hexString={element.bidder} type='address' /> </td>
+          <td> <ScopeReference hexString={element.bidder.toString()} type='address' /> </td>
           <td> {element.quantity} SOL </td>
           {/* <td> {new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit' }).format(element.bidDate)}</td> */}
           <td> {element.isWithdrawed ? 'Yes' : 'No'}</td>
@@ -84,7 +84,7 @@ const Detail = () => {
               <p className='h5'>Auction Results</p>
 
               <div className='mb-2 d-flex align-items-center'>
-                <BsCoin size={24} className='me-2' />  {data?.startingPrice.toNumber()} SOL
+                <BsCoin size={24} className='me-2' />  {data?.startingPrice} SOL
               </div>
               <Table bordered responsive>
                 <thead>
@@ -114,15 +114,15 @@ const Detail = () => {
               {account != "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" && !isOwner && data?.isStart ?
                 <div className='d-flex float-end'>
 
-                  {/* <RegisterAuctionModal
-                    contractAddress={address}
+                  <RegisterAuctionModal
+                    address={address}
                     enableShow={enableShow}
                     bids={bids}
-                    startingPrice={data.startingPrice.toNumber()}
+                    startingPrice={data.startingPrice}
                     setBids={setBids}
                     className='me-3' />
 
-                  <Button variant='outline-danger' disabled={bids?.length == 0}
+                  {/*  <Button variant='outline-danger' disabled={bids?.length == 0}
                     onClick={async () => {
                       const receipt = await withdrawBid(
                         web3,

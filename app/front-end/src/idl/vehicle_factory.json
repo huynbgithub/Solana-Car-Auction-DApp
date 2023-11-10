@@ -30,7 +30,7 @@
         },
         {
           "name": "startingPrice",
-          "type": "u128"
+          "type": "f64"
         },
         {
           "name": "vehicleImages",
@@ -104,7 +104,7 @@
       "args": [
         {
           "name": "quantity",
-          "type": "u64"
+          "type": "f64"
         }
       ]
     }
@@ -135,7 +135,7 @@
           },
           {
             "name": "startingPrice",
-            "type": "u128"
+            "type": "f64"
           },
           {
             "name": "vehicleImages",
@@ -235,7 +235,7 @@
           },
           {
             "name": "quantity",
-            "type": "u64"
+            "type": "f64"
           },
           {
             "name": "isWithdrawed",

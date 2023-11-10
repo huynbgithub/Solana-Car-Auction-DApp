@@ -52,7 +52,7 @@ const AssetVehicleCard = (props) => {
                                     onChange={event => handleChecked(event)}
                                 />
                             </div>
-                            <div>Starting Price: {props.data.account.startingPrice.toNumber()} SOL</div>
+                            <div>Starting Price: {props.data.account.startingPrice} SOL</div>
                         </Card.Text>
                         <Button onClick={() => navigate(`/detail/${props.data.publicKey.toString()}`)} variant="outline-success" className="float-end"> Detail </Button>
                     </Card.Body>

@@ -23,7 +23,7 @@ const AdminVehicleCard = (props) => {
                             <Card.Title> <ScopeReference hexString={props.data.publicKey.toString()} type='address' /></Card.Title>
                             <Card.Text>
                                 <ApprovalStatus className='mb-2' type={props.data.account.isApproved} />
-                                <div>Starting Price: {props.data.account.startingPrice.toNumber()} SOL</div>
+                                <div>Starting Price: {props.data.account.startingPrice} SOL</div>
                             </Card.Text>
                             <Button onClick={() => navigate(`/detail/${props.data.publicKey.toString()}`)} variant="outline-success" className="float-end">Detail</Button>
                         </Card.Body>

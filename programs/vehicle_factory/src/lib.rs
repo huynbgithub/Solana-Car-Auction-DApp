@@ -10,7 +10,7 @@ pub mod vehicle_factory {
     pub fn create_vehicle(
         ctx: Context<CreateVehicle>,
         props: VehicleProperties,
-        starting_price: u128,
+        starting_price: f64,
         vehicle_images: Vec<String>,
     ) -> Result<()> {
         let vehicle = &mut ctx.accounts.vehicle;
@@ -44,7 +44,7 @@ pub mod vehicle_factory {
         Ok(())
     }
 
-    pub fn create_bid(ctx: Context<CreateBid>, quantity: u64) -> Result<()> {
+    pub fn create_bid(ctx: Context<CreateBid>, quantity: f64) -> Result<()> {
         let vehicle = &mut ctx.accounts.vehicle;
 
         let bidder = &mut ctx.accounts.authority;
@@ -66,7 +66,7 @@ pub mod vehicle_factory {
         let to_account = &ctx.accounts.to_account;
 
         // Create the transfer instruction
-        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(from_account.key, to_account.key, quantity * 1000000000);
+        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(from_account.key, to_account.key, (quantity * 1000000000.0) as u64);
 
         // Invoke the transfer instruction
         anchor_lang::solana_program::program::invoke(
@@ -148,7 +148,7 @@ pub struct VehicleData {
     is_start: bool,
     is_approved: bool,
     props: VehicleProperties,
-    starting_price: u128,
+    starting_price: f64,
     vehicle_images: Vec<String>,
     bids: Vec<Bid>,
     bids_size: u32,
@@ -175,6 +175,6 @@ pub struct VehicleProperties {
 pub struct Bid {
     index: u32,
     bidder: Pubkey,
-    quantity: u64,
+    quantity: f64,
     is_withdrawed: bool,
 }

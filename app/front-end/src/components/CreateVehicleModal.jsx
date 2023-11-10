@@ -46,7 +46,7 @@ const CreateVehicleModal = () => {
             capacity: 4,
             firstRegistrationDate: '2023-11-08',
             images: null,
-            startingPrice: 1,
+            startingPrice: 0.1,
         },
 
         validationSchema: Yup.object({
@@ -73,7 +73,7 @@ const CreateVehicleModal = () => {
                 .min(1, 'Capacity must be at least 1')
                 .required('Capacity is required'),
             startingPrice: Yup.number()
-                .min(1, 'Starting Price must be equal or more than 1 SOL')
+                .min(0.1, 'Starting Price must be equal or more than 0.1 SOL')
                 .required('Starting Price is required'),
             images: Yup.array().required('Vehicle Images is required'),
         }),
@@ -115,7 +115,7 @@ const CreateVehicleModal = () => {
                                 capacity: values.capacity,
                                 firstRegistrationDate: values.firstRegistrationDate,
                             },
-                            new anchor.BN(values.startingPrice), vehicleImages
+                            values.startingPrice, vehicleImages
                         )
                         .accounts({
                             vehicle: myAccount.publicKey,

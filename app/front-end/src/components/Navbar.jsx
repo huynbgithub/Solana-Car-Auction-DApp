@@ -41,7 +41,11 @@ export default function Navbar() {
 
                 await setAccount(account);
 
-                const connection = new Connection(network, "processed")
+                const connection = new Connection(network, "processed");
+
+                const lamportBalance = await connection.getBalance(account);
+                const balance = lamportBalance / 1000000000;
+                setBalance(balance);
 
                 const provider = new anchor.AnchorProvider(
                     connection,

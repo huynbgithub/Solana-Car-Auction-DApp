@@ -39,7 +39,7 @@ const AllVehicleCard = (props) => {
                             <Card.Text>
                                 <AuctionStatus className='' type={props.data.account.isStart} />
                                 <div className='mb-1'>License Plate: {props.data.account.props.licensePlate}</div>
-                                <div className='mb-1'>Starting Price: {props.data.account.startingPrice.toNumber()} SOL</div>
+                                <div className='mb-1'>Starting Price: {props.data.account.startingPrice} SOL</div>
                             </Card.Text>
                             <Button onClick={() => navigate(`/detail/${props.data.publicKey.toString()}`)} variant="outline-success" className="float-end">Detail</Button>
                         </Card.Body>
