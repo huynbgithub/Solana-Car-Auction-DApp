@@ -4,8 +4,6 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { getStorage, getDownloadURL, uploadBytes, ref } from 'firebase/storage'
 import { BsExclamationCircle } from 'react-icons/bs'
-// import { createVehicle } from '../contracts/VehicleFactoryContract'
-// import { exponent } from '../utils/Constants'
 import { Web3Context } from '../App'
 import * as anchor from '@coral-xyz/anchor'
 
@@ -20,15 +18,14 @@ const CreateVehicleModal = () => {
         formik.resetForm()
     }
 
-    const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    const { balance, setBalance } = useContext(Web3Context);
+    const { program } = useContext(Web3Context);
+    const { account } = useContext(Web3Context);
 
-    const currentDate = new Date()
-    const year = currentDate.getFullYear().toString()
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
-    const day = currentDate.getDate().toString().padStart(2, '0')
-    const formattedDate = `${year}-${month}-${day}`
+    // const currentDate = new Date()
+    // const year = currentDate.getFullYear().toString()
+    // const month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
+    // const day = currentDate.getDate().toString().padStart(2, '0')
+    // const formattedDate = `${year}-${month}-${day}`
 
     const formik = useFormik({
         initialValues: {

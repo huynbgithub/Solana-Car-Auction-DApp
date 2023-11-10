@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Web3Context } from "../App";
 
 export default function Wallet() {
-    // const { web3, setWeb3 } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    const { balance, setBalance } = useContext(Web3Context);
+    const { account } = useContext(Web3Context);
+    const { balance } = useContext(Web3Context);
 
     return (
         <div className="container">

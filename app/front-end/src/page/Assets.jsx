@@ -9,15 +9,13 @@ import AssetVehicleCard from '../components/AssetVehicleCard'
 
 export default function Assets() {
 
-    const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
+    const { program } = useContext(Web3Context);
 
     const [cars, setCars] = useState(null);
 
     useEffect(() => {
         loadCars();
-    }, [account]);
+    }, [program]);
 
     async function loadCars() {
         if (program) {

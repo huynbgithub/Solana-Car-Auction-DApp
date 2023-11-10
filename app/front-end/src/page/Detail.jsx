@@ -20,9 +20,9 @@ const Detail = () => {
   const [isOwner, setIsOwner] = useState(true)
 
   useEffect(() => {
-    if (account) {
+    if (program) {
       const handleEffect = async () => {
-        const data = await program.account.vehicleData.fetch(address)
+        const data = await program.account.vehicleData.fetch(address).catch(error => console.log(error));
         setData(data)
 
         const bids = await data.bids
@@ -41,7 +41,7 @@ const Detail = () => {
       }
       handleEffect()
     }
-  }, [account])
+  }, [program, bids])
 
   const renderImages = () => {
     const images = []

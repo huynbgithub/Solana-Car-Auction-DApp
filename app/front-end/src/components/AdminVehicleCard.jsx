@@ -1,15 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React from 'react'
 import { Button, Card } from 'react-bootstrap'
-// import { exponent } from '../utils/Constants'
 import { Web3Context } from "../App";
 import { useNavigate } from 'react-router-dom'
 import { ScopeReference } from './Utils'
 import { ApprovalStatus } from '../components/Utils'
 
 const AdminVehicleCard = (props) => {
-
-    // const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
 
     const navigate = useNavigate()
 

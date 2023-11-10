@@ -7,29 +7,23 @@ import { Dropdown } from 'react-bootstrap';
 
 export default function Home() {
 
-    const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
-
-
+    const { program } = useContext(Web3Context);
 
     const [cars, setCars] = useState(null);
     const [filter, setFilter] = useState(true);
 
     useEffect(() => {
         loadCars();
-    }, [account]);
+    }, [program]);
 
     async function loadCars() {
         if (program) {
             const carsData = await program.account.vehicleData.all().catch(error => console.log(error));
-            console.log(carsData);
             setCars(carsData);
         }
     }
 
     const notificationRef = useRef(null)
-    const enableShow = (alert) => (notificationRef.current).setShow(alert)
 
     return (
         <div className="container-fluid">
@@ -48,14 +42,14 @@ export default function Home() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item
-                                onClick={(event) => {
+                                onClick={() => {
                                     setFilter(true)
                                 }}
                             >
                                 Started
                             </Dropdown.Item>
                             <Dropdown.Item
-                                onClick={(event) => {
+                                onClick={() => {
                                     setFilter(false)
                                 }}
                             >

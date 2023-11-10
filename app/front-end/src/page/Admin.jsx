@@ -6,20 +6,18 @@ import AdminVehicleCard from '../components/AdminVehicleCard'
 
 export default function Admin() {
 
-    const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
+    const { program } = useContext(Web3Context);
+    const { account } = useContext(Web3Context);
 
     const [cars, setCars] = useState(null);
 
     useEffect(() => {
         loadCars();
-    }, [account]);
+    }, [program]);
 
     async function loadCars() {
         if (program) {
             const carsData = await program.account.vehicleData.all().catch(error => console.log(error));
-            // console.log(carsData);
             setCars(carsData);
         }
     }

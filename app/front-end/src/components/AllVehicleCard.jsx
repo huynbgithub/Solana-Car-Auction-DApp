@@ -8,24 +8,9 @@ import { AuctionStatus } from '../components/Utils'
 
 const AllVehicleCard = (props) => {
 
-    // const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    // const { balance, setBalance } = useContext(Web3Context);
-    // const [approved, setApproved] = useState(null)
-    // const [isOwner, setIsOwner] = useState(true)
+    const { account } = useContext(Web3Context);
 
     const navigate = useNavigate()
-
-    // useEffect(() => {
-    //     async function handleEffect() {
-    //         const approved = await props.data.account.isApproved;
-    //         setApproved(approved);
-
-    //         const isOwner = await props.data.account.ownerAddress.toString() != account.toString();
-    //         setIsOwner(isOwner);
-    //     }
-    //     handleEffect();
-    // }, []);
 
     return (
         <>

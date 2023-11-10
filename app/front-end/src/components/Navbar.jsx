@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Web3Context } from "../App";
 
@@ -11,9 +11,9 @@ const network = clusterApiUrl('devnet')
 
 export default function Navbar() {
 
-    const { program, setProgram } = useContext(Web3Context);
+    const { setProgram } = useContext(Web3Context);
     const { account, setAccount } = useContext(Web3Context);
-    const { balance, setBalance } = useContext(Web3Context);
+    const { setBalance } = useContext(Web3Context);
 
     const detectCurrentProvider = () => {
         if ('phantom' in window) {
@@ -33,7 +33,6 @@ export default function Navbar() {
             const currentProvider = detectCurrentProvider();
 
             if (currentProvider.isPhantom) {
-                console.log("Phantom wallet found");
 
                 const res = await currentProvider.request({ method: "connect" });
 
@@ -45,7 +44,8 @@ export default function Navbar() {
 
                 const lamportBalance = await connection.getBalance(account);
                 const balance = lamportBalance / 1000000000;
-                setBalance(balance);
+
+                await setBalance(balance);
 
                 const provider = new anchor.AnchorProvider(
                     connection,
@@ -55,7 +55,7 @@ export default function Navbar() {
 
                 const program = new anchor.Program(idl, programID, provider)
 
-                setProgram(program)
+                await setProgram(program)
 
             }
 

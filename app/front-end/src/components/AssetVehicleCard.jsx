@@ -1,7 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Card, Form } from 'react-bootstrap'
-// import { exponent } from '../utils/Constants'
-// import { setStart, getIsApproved } from '../contracts/VehicleContract'
 import { Web3Context } from "../App";
 import { useNavigate } from 'react-router-dom'
 import { ScopeReference } from './Utils'
@@ -9,9 +7,8 @@ import { ApprovalStatus } from '../components/Utils'
 
 const AssetVehicleCard = (props) => {
 
-    const { program, setProgram } = useContext(Web3Context);
-    const { account, setAccount } = useContext(Web3Context);
-    const { balance, setBalance } = useContext(Web3Context);
+    const { program } = useContext(Web3Context);
+    const { account } = useContext(Web3Context);
 
     const [isChecked, setIsChecked] = useState(props.data.account.isStart)
 
