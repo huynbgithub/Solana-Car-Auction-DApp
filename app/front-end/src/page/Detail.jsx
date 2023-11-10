@@ -124,7 +124,7 @@ const Detail = () => {
 
                   <Button variant='outline-danger' disabled={bids?.length == 0}
                     onClick={async () => {
-                      await program.methods
+                      const receipt = await program.methods
                         .withdrawBid(0.1)
                         .accounts({
                           vehicle: address,
@@ -132,15 +132,14 @@ const Detail = () => {
                           fromAccount: address,
                         })
                         .rpc().catch(error => console.log(error))
-
                       try {
                         enableShow({
                           hasShow: true,
                           variant: 'success',
                           content: <div>A bid has been withdrawed. Transaction hash:
-                            {/* {<ScopeReference
-                              hexString={receipt.transactionHash}
-                              type='transaction' />} */}
+                            {<ScopeReference
+                              hexString={receipt}
+                              type='transaction' />}
                           </div>
                         })
                       } catch (e) {

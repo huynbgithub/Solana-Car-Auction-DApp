@@ -76,8 +76,6 @@ const CreateVehicleModal = () => {
         }),
 
         onSubmit: values => {
-            console.log(values)
-
             const handleSubmit = async () => {
                 const vehicleImageFiles = values.images
                 const vehicleImages = []

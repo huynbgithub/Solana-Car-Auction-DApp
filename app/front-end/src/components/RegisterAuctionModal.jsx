@@ -58,24 +58,24 @@ const RegisterAuctionModal = (props) => {
             const handleSubmit = async () => {
 
                 // const date = new Date().getTime()
-                // const receipt = 
-                await program.methods
-                    .createBid(values.quantity)
-                    .accounts({
-                        vehicle: props.address,
-                        authority: account,
-                        toAccount: props.address,
-                    })
-                    .rpc().catch(error => console.log(error))
+                const receipt =
+                    await program.methods
+                        .createBid(values.quantity)
+                        .accounts({
+                            vehicle: props.address,
+                            authority: account,
+                            toAccount: props.address,
+                        })
+                        .rpc().catch(error => console.log(error))
 
                 try {
                     props.enableShow({
                         hasShow: true,
                         variant: 'success',
                         content: <div>New auction has been created. Transaction hash:
-                            {/* {<ScopeReference
-                            hexString={receipt.transactionHash}
-                            type='transaction' />} */}
+                            {<ScopeReference
+                                hexString={receipt}
+                                type='transaction' />}
                         </div>
                     })
                 } catch (e) {
