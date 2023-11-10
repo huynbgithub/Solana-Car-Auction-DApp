@@ -91,11 +91,6 @@
           "isSigner": true
         },
         {
-          "name": "toAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -120,11 +115,6 @@
           "name": "authority",
           "isMut": true,
           "isSigner": true
-        },
-        {
-          "name": "fromAccount",
-          "isMut": true,
-          "isSigner": false
         },
         {
           "name": "systemProgram",

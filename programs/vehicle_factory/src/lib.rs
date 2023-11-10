@@ -62,18 +62,15 @@ pub mod vehicle_factory {
 
         vehicle.bids_size += 1;
 
-        let from_account = &ctx.accounts.authority;
-        let to_account = &ctx.accounts.to_account;
-
         // Create the transfer instruction
-        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(from_account.key, to_account.key, (quantity * 1000000000.0) as u64);
+        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(bidder.key, &vehicle.key(), (quantity * 1000000000.0) as u64);
 
         // Invoke the transfer instruction
         anchor_lang::solana_program::program::invoke(
             &transfer_instruction,
             &[
-                from_account.to_account_info(),
-                to_account.clone(),
+                bidder.to_account_info(),
+                vehicle.to_account_info(),
                 ctx.accounts.system_program.to_account_info(),
             ],
         )?;
@@ -99,11 +96,8 @@ pub mod vehicle_factory {
 
         vehicle.bids_size += 1;
 
-        let from_account = &ctx.accounts.from_account;
-        let to_account = &ctx.accounts.authority;
-
-        **from_account.to_account_info().try_borrow_mut_lamports()? -= (quantity * 1000000000.0) as u64;
-        **to_account.to_account_info().try_borrow_mut_lamports()? += (quantity * 1000000000.0) as u64;
+        **vehicle.to_account_info().try_borrow_mut_lamports()? -= (quantity * 1000000000.0) as u64;
+        **bidder.to_account_info().try_borrow_mut_lamports()? += (quantity * 1000000000.0) as u64;
 
         Ok(())
     }
@@ -163,9 +157,6 @@ pub struct CreateBid<'info> {
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
-    #[account(mut)]
-    /// CHECK: This is not dangerous because we don't read or write from this account
-    pub to_account: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -180,9 +171,6 @@ pub struct WithdrawBid<'info> {
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
-    #[account(mut)]
-    /// CHECK: This is not dangerous because we don't read or write from this account
-    pub from_account: Account<'info, VehicleData>,
     pub system_program: Program<'info, System>,
 }
 

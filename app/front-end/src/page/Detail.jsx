@@ -146,7 +146,7 @@ const Detail = () => {
                       } catch (e) {
                         console.log(e)
                       }
-                      const bids = await program.account.vehicleData.fetch(address)
+                      const bids = (await program.account.vehicleData.fetch(address)).bids
                       setBids(bids)
                     }}>
                     Withdraw </Button>

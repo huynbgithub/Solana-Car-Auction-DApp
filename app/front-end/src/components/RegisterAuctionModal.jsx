@@ -81,7 +81,7 @@ const RegisterAuctionModal = (props) => {
                 } catch (e) {
                     console.log(e)
                 }
-                props.setBids(await program.account.vehicleData.fetch(props.address))
+                props.setBids((await program.account.vehicleData.fetch(props.address)).bids)
 
                 handleClose()
             }
