@@ -80,6 +80,33 @@ pub mod vehicle_factory {
 
         Ok(())
     }
+
+    pub fn withdraw_bid(ctx: Context<WithdrawBid>, quantity: f64) -> Result<()> {
+        let vehicle = &mut ctx.accounts.vehicle;
+
+        let bidder = &mut ctx.accounts.authority;
+
+        let bids_size = vehicle.bids_size;
+
+        vehicle.bids.push(
+            Bid {
+                index: bids_size + 1,
+                bidder: bidder.key(),
+                quantity: quantity,
+                is_withdrawed: true
+            }
+        );
+
+        vehicle.bids_size += 1;
+
+        let from_account = &ctx.accounts.from_account;
+        let to_account = &ctx.accounts.authority;
+
+        **from_account.to_account_info().try_borrow_mut_lamports()? -= (quantity * 1000000000.0) as u64;
+        **to_account.to_account_info().try_borrow_mut_lamports()? += (quantity * 1000000000.0) as u64;
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -139,6 +166,23 @@ pub struct CreateBid<'info> {
     #[account(mut)]
     /// CHECK: This is not dangerous because we don't read or write from this account
     pub to_account: AccountInfo<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct WithdrawBid<'info> {
+    #[account
+    (
+        mut,
+        constraint = vehicle.is_start == true,
+        constraint = authority.key() != vehicle.owner_address
+    )]
+    pub vehicle: Account<'info, VehicleData>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    #[account(mut)]
+    /// CHECK: This is not dangerous because we don't read or write from this account
+    pub from_account: Account<'info, VehicleData>,
     pub system_program: Program<'info, System>,
 }
 

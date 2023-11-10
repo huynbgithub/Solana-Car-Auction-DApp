@@ -107,6 +107,37 @@
           "type": "f64"
         }
       ]
+    },
+    {
+      "name": "withdrawBid",
+      "accounts": [
+        {
+          "name": "vehicle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "fromAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "quantity",
+          "type": "f64"
+        }
+      ]
     }
   ],
   "accounts": [

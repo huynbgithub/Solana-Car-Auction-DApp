@@ -122,27 +122,34 @@ const Detail = () => {
                     setBids={setBids}
                     className='me-3' />
 
-                  {/*  <Button variant='outline-danger' disabled={bids?.length == 0}
+                  <Button variant='outline-danger' disabled={bids?.length == 0}
                     onClick={async () => {
-                      const receipt = await withdrawBid(
-                        web3,
-                        address,
-                        account)
+                      await program.methods
+                        .withdrawBid(0.1)
+                        .accounts({
+                          vehicle: address,
+                          authority: account,
+                          fromAccount: address,
+                        })
+                        .rpc().catch(error => console.log(error))
+
                       try {
                         enableShow({
                           hasShow: true,
                           variant: 'success',
-                          content: <div>A bid has been withdrawed. Transaction hash: {<ScopeReference
-                            hexString={receipt.transactionHash}
-                            type='transaction' />}</div>
+                          content: <div>A bid has been withdrawed. Transaction hash:
+                            {/* {<ScopeReference
+                              hexString={receipt.transactionHash}
+                              type='transaction' />} */}
+                          </div>
                         })
                       } catch (e) {
                         console.log(e)
                       }
-                      const bids = await getBids(address)
+                      const bids = await program.account.vehicleData.fetch(address)
                       setBids(bids)
                     }}>
-                    Withdraw </Button> */}
+                    Withdraw </Button>
                 </div>
                 : <div> </div>}
               {account != "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" && isOwner && data?.isStart ? <div className='d-flex float-end'>

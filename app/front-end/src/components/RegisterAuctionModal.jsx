@@ -5,12 +5,10 @@ import * as Yup from 'yup'
 import { BsExclamationCircle } from 'react-icons/bs'
 import { Web3Context } from '../App'
 import { ScopeReference } from './Utils'
-import idl from '../idl/vehicle_factory.json'
 
 const RegisterAuctionModal = (props) => {
     const { program } = useContext(Web3Context);
     const { account } = useContext(Web3Context);
-    const { balance } = useContext(Web3Context);
 
     const [show, setShow] = useState(false)
     // const [nearestUnwithdrawedBid, setNearestUnwithdrawedBid] = useState(null)
@@ -66,9 +64,9 @@ const RegisterAuctionModal = (props) => {
                     .accounts({
                         vehicle: props.address,
                         authority: account,
-                        toAccount: idl.metadata.address,
+                        toAccount: props.address,
                     })
-                    .rpc()
+                    .rpc().catch(error => console.log(error))
 
                 try {
                     props.enableShow({
