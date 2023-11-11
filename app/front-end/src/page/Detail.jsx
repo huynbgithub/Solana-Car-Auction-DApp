@@ -124,7 +124,7 @@ const Detail = () => {
 
                   <Button variant='outline-danger' disabled={bids?.length == 0}
                     onClick={async () => {
-                      const receipt = await program.methods
+                      const txHash = await program.methods
                         .withdrawBid(0.1)
                         .accounts({
                           vehicle: address,
@@ -138,7 +138,7 @@ const Detail = () => {
                           variant: 'success',
                           content: <div>A bid has been withdrawed. Transaction hash:
                             {<ScopeReference
-                              hexString={receipt}
+                              hexString={txHash}
                               type='transaction' />}
                           </div>
                         })
@@ -155,7 +155,7 @@ const Detail = () => {
                 <Button variant='danger'
                 // onClick={
                 // async () => {
-                //   const receipt = await submitAuction(
+                //   const txHash = await submitAuction(
                 //     web3,
                 //     address,
                 //     account)
@@ -164,7 +164,7 @@ const Detail = () => {
                 //       hasShow: true,
                 //       variant: 'outline-success',
                 //       content: <div>A bid has been submitted. Transaction hash: {<ScopeReference
-                //         hexString={receipt.transactionHash}
+                //         hexString={txHash.transactionHash}
                 //         type='transaction' />}</div>
                 //     })
                 //   } catch (e) {
@@ -187,7 +187,7 @@ const Detail = () => {
                 <div className='d-flex float-end'>
                   <Button variant='success'
                     onClick={async () => {
-                      // const receipt = 
+                      // const txHash = 
                       await program.methods
                         .approveVehicle()
                         .accounts({
@@ -202,7 +202,7 @@ const Detail = () => {
                       //     hasShow: true,
                       //     variant: 'outline-success',
                       //     content: <div>This car has been approved by admin. Transaction hash: {<ScopeReference
-                      //       hexString={receipt.transactionHash}
+                      //       hexString={txHash.transactionHash}
                       //       type='transaction' />}</div>
                       //   })
                       // } catch (e) {

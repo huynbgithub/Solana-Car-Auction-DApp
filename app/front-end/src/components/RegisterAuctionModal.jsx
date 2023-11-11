@@ -58,7 +58,7 @@ const RegisterAuctionModal = (props) => {
             const handleSubmit = async () => {
 
                 // const date = new Date().getTime()
-                const receipt =
+                const txHash =
                     await program.methods
                         .createBid(values.quantity)
                         .accounts({
@@ -74,7 +74,7 @@ const RegisterAuctionModal = (props) => {
                         variant: 'success',
                         content: <div>New auction has been created. Transaction hash:
                             {<ScopeReference
-                                hexString={receipt}
+                                hexString={txHash}
                                 type='transaction' />}
                         </div>
                     })
