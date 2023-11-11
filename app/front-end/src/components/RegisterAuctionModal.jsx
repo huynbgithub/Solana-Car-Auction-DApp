@@ -64,7 +64,7 @@ const RegisterAuctionModal = (props) => {
                         .accounts({
                             vehicle: props.address,
                             authority: account,
-                            refundAccount: props.bids[props.bids.length - 1].bidder,
+                            refundAccount: props.bids.length > 0 ? props.bids[props.bids.length - 1].bidder : account,
                         })
                         .rpc().catch(error => console.log(error))
 
