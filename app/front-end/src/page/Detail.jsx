@@ -19,28 +19,27 @@ const Detail = () => {
   const [approved, setApproved] = useState(null)
   const [isOwner, setIsOwner] = useState(true)
 
-  useEffect(() => {
+  const handleEffect = async () => {
     if (program) {
-      const handleEffect = async () => {
-        const data = await program.account.vehicleData.fetch(address).catch(error => console.log(error));
-        setData(data)
+      const data = await program.account.vehicleData.fetch(address).catch(error => console.log(error));
+      setData(data)
 
-        const bids = await data.bids
-        setBids(bids)
+      const bids = await data.bids
+      setBids(bids)
 
-        const owner = await data.ownerAddress.toString()
-        setOwner(owner)
+      const owner = await data.ownerAddress.toString()
+      setOwner(owner)
 
-        const approved = await data.isApproved
-        setApproved(approved);
+      const approved = await data.isApproved
+      setApproved(approved);
 
-        if (account && account != null) {
-          const isOwner = await account.toString() == owner
-          setIsOwner(isOwner)
-        }
-      }
-      handleEffect()
+      const isOwner = await account.toString() == owner
+      setIsOwner(isOwner)
     }
+  }
+
+  useEffect(() => {
+    handleEffect()
   }, [program, bids])
 
   const renderImages = () => {
@@ -61,7 +60,7 @@ const Detail = () => {
           <td> <ScopeReference hexString={element.bidder.toString()} type='address' /> </td>
           <td> {element.quantity} SOL </td>
           {/* <td> {new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit' }).format(element.bidDate)}</td> */}
-          <td> {element.isWithdrawed ? 'Yes' : 'No'}</td>
+          <td> {element.isWithdrawn ? 'Yes' : 'No'}</td>
         </tr>
       ))
     return rows
@@ -93,7 +92,7 @@ const Detail = () => {
                     <th>Bidder</th>
                     <th>Quantity</th>
                     {/* <th>Time</th> */}
-                    <th>Withdrawed</th>
+                    <th>Withdrawn</th>
                   </tr>
                 </thead>
 
@@ -125,21 +124,22 @@ const Detail = () => {
                   <Button variant='outline-danger' disabled={bids?.length == 0}
                     onClick={async () => {
                       const txHash = await program.methods
-                        .withdrawBid(0.1)
+                        .withdrawBid()
                         .accounts({
                           vehicle: address,
                           authority: account,
-                          fromAccount: address,
                         })
                         .rpc().catch(error => console.log(error))
+
                       try {
                         enableShow({
                           hasShow: true,
                           variant: 'success',
-                          content: <div>A bid has been withdrawed. Transaction hash:
-                            {<ScopeReference
-                              hexString={txHash}
-                              type='transaction' />}
+                          content: <div>
+                            {txHash
+                              ? <>A bid has been withdrawn. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                              : 'Transaction failed'
+                            }
                           </div>
                         })
                       } catch (e) {
@@ -161,12 +161,15 @@ const Detail = () => {
                 //     account)
                 //   try {
                 //     enableShow({
-                //       hasShow: true,
-                //       variant: 'outline-success',
-                //       content: <div>A bid has been submitted. Transaction hash: {<ScopeReference
-                //         hexString={txHash.transactionHash}
-                //         type='transaction' />}</div>
-                //     })
+                //   hasShow: true,
+                //   variant: 'success',
+                //   content: <div>
+                //     {txHash
+                //   ? <>A bid has been withdrawn. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                //   : 'Transaction failed'
+                // }
+                //   </div>
+                // })
                 //   } catch (e) {
                 //     console.log(e)
                 //   }
@@ -199,12 +202,15 @@ const Detail = () => {
                       setApproved(true);
                       // try {
                       //   enableShow({
-                      //     hasShow: true,
-                      //     variant: 'outline-success',
-                      //     content: <div>This car has been approved by admin. Transaction hash: {<ScopeReference
-                      //       hexString={txHash.transactionHash}
-                      //       type='transaction' />}</div>
-                      //   })
+                      //   hasShow: true,
+                      //   variant: 'success',
+                      //   content: <div>
+                      // {txHash
+                      //   ? <>A bid has been withdrawn. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                      //   : 'Transaction failed'
+                      // }
+                      //   </div>
+                      // })
                       // } catch (e) {
                       //   console.log(e)
                       // }

@@ -91,6 +91,11 @@
           "isSigner": true
         },
         {
+          "name": "refundAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -122,12 +127,7 @@
           "isSigner": false
         }
       ],
-      "args": [
-        {
-          "name": "quantity",
-          "type": "f64"
-        }
-      ]
+      "args": []
     }
   ],
   "accounts": [
@@ -259,7 +259,7 @@
             "type": "f64"
           },
           {
-            "name": "isWithdrawed",
+            "name": "isWithdrawn",
             "type": "bool"
           }
         ]

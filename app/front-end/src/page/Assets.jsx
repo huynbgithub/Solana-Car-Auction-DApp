@@ -38,9 +38,7 @@ export default function Assets() {
                     ref={notificationRef}
                 /> */}
                 {cars && cars.map((car, index) => (
-                    <div className="col-3 mt-3" key={index}>
-                        <AssetVehicleCard data={car} />
-                    </div>
+                    <AssetVehicleCard data={car} key={index} />
                 ))}
             </div>
         </div>

@@ -11,7 +11,7 @@ const RegisterAuctionModal = (props) => {
     const { account } = useContext(Web3Context);
 
     const [show, setShow] = useState(false)
-    // const [nearestUnwithdrawedBid, setNearestUnwithdrawedBid] = useState(null)
+    // const [nearestUnwithdrawnBid, setNearestUnwithdrawnBid] = useState(null)
     const handleClose = () => setShow(false)
     const handleShow = () => {
         setShow(true)
@@ -21,9 +21,9 @@ const RegisterAuctionModal = (props) => {
     // useEffect(() => {
     //     if (show) {
     //         const handleEffect = async () => {
-    //             const nearestUnwithdrawedBid = await findNearestUnwithdrawedBid(props.contractAddress)
-    //             console.log(nearestUnwithdrawedBid)
-    //             setNearestUnwithdrawedBid(nearestUnwithdrawedBid)
+    //             const nearestUnwithdrawnBid = await findNearestUnwithdrawnBid(props.contractAddress)
+    //             console.log(nearestUnwithdrawnBid)
+    //             setNearestUnwithdrawnBid(nearestUnwithdrawnBid)
     //         }
     //         handleEffect()
     //     }
@@ -36,15 +36,15 @@ const RegisterAuctionModal = (props) => {
         validationSchema: Yup.object({
             quantity: Yup.number()
                 .min(
-                    // nearestUnwithdrawedBid == null || (nearestUnwithdrawedBid).isWithdrawed
+                    // nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
                     //     ? (
                     props.startingPrice
                     //      / exponent)
                     // : (Math.round(
-                    //     ((nearestUnwithdrawedBid).quantity
+                    //     ((nearestUnwithdrawnBid).quantity
                     //         / exponent + 0.1 + Number.EPSILON) * 100)) / 100
                     ,
-                    // nearestUnwithdrawedBid == null || (nearestUnwithdrawedBid).isWithdrawed
+                    // nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
                     //     ? 
                     'The quantity must equal or exceed the starting price'
 
@@ -64,7 +64,7 @@ const RegisterAuctionModal = (props) => {
                         .accounts({
                             vehicle: props.address,
                             authority: account,
-                            toAccount: props.address,
+                            refundAccount: props.bids[props.bids.length - 1].bidder,
                         })
                         .rpc().catch(error => console.log(error))
 
@@ -72,10 +72,11 @@ const RegisterAuctionModal = (props) => {
                     props.enableShow({
                         hasShow: true,
                         variant: 'success',
-                        content: <div>New auction has been created. Transaction hash:
-                            {<ScopeReference
-                                hexString={txHash}
-                                type='transaction' />}
+                        content: <div>
+                            {txHash
+                                ? <>New bid has been created. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                                : 'Transaction failed'
+                            }
                         </div>
                     })
                 } catch (e) {
@@ -121,14 +122,14 @@ const RegisterAuctionModal = (props) => {
                             ) : null}
                         </div>
                         <div>
-                            {/* {nearestUnwithdrawedBid == null || (nearestUnwithdrawedBid).isWithdrawed
+                            {/* {nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
                                 ?  */}
                             <div>
                                 <b>Starting Price: </b> {props.startingPrice} SOL
                             </div>
                             {/* :
                                 <div>
-                                    <b>Previous Quantity: </b> {((nearestUnwithdrawedBid).quantity) / exponent} SOL
+                                    <b>Previous Quantity: </b> {((nearestUnwithdrawnBid).quantity) / exponent} SOL
                                 </div> 
                             }*/}
 

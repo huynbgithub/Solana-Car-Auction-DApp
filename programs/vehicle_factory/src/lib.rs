@@ -46,24 +46,15 @@ pub mod vehicle_factory {
 
     pub fn create_bid(ctx: Context<CreateBid>, quantity: f64) -> Result<()> {
         let vehicle = &mut ctx.accounts.vehicle;
-
         let bidder = &mut ctx.accounts.authority;
-
-        let bids_size = vehicle.bids_size;
-
-        vehicle.bids.push(
-            Bid {
-                index: bids_size + 1,
-                bidder: bidder.key(),
-                quantity: quantity,
-                is_withdrawed: false
-            }
-        );
-
-        vehicle.bids_size += 1;
+        let refund_account = &mut ctx.accounts.refund_account;
 
         // Create the transfer instruction
-        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(bidder.key, &vehicle.key(), (quantity * 1000000000.0) as u64);
+        let transfer_instruction = anchor_lang::solana_program::system_instruction::transfer(
+            bidder.key,
+            &vehicle.key(),
+            (quantity * 1000000000.0) as u64,
+        );
 
         // Invoke the transfer instruction
         anchor_lang::solana_program::program::invoke(
@@ -75,30 +66,48 @@ pub mod vehicle_factory {
             ],
         )?;
 
+        if let Some(last_bid) = vehicle.bids.last_mut() {
+            if !last_bid.is_withdrawn {
+                last_bid.is_withdrawn = true;
+
+                let quantity = last_bid.quantity;
+
+                **vehicle.to_account_info().try_borrow_mut_lamports()? -=
+                    (quantity * 1000000000.0) as u64;
+                **refund_account.to_account_info().try_borrow_mut_lamports()? +=
+                    (quantity * 1000000000.0) as u64;
+            }
+        }
+
+        let bids_size = vehicle.bids_size;
+
+        vehicle.bids.push(Bid {
+            index: bids_size + 1,
+            bidder: bidder.key(),
+            quantity: quantity,
+            is_withdrawn: false,
+        });
+
+        vehicle.bids_size += 1;
+
         Ok(())
     }
 
-    pub fn withdraw_bid(ctx: Context<WithdrawBid>, quantity: f64) -> Result<()> {
+    pub fn withdraw_bid(ctx: Context<WithdrawBid>) -> Result<()> {
         let vehicle = &mut ctx.accounts.vehicle;
 
         let bidder = &mut ctx.accounts.authority;
 
-        let bids_size = vehicle.bids_size;
+        if let Some(last_bid) = vehicle.bids.last_mut() {
+            last_bid.is_withdrawn = true;
 
-        vehicle.bids.push(
-            Bid {
-                index: bids_size + 1,
-                bidder: bidder.key(),
-                quantity: quantity,
-                is_withdrawed: true
-            }
-        );
+            let quantity = last_bid.quantity;
 
-        vehicle.bids_size += 1;
-
-        **vehicle.to_account_info().try_borrow_mut_lamports()? -= (quantity * 1000000000.0) as u64;
-        **bidder.to_account_info().try_borrow_mut_lamports()? += (quantity * 1000000000.0) as u64;
-
+            **vehicle.to_account_info().try_borrow_mut_lamports()? -=
+                (quantity * 1000000000.0) as u64;
+            **bidder.to_account_info().try_borrow_mut_lamports()? +=
+                (quantity * 1000000000.0) as u64;
+        }
         Ok(())
     }
 }
@@ -121,8 +130,8 @@ pub struct CreateVehicle<'info> {
 #[derive(Accounts)]
 pub struct ApproveVehicle<'info> {
     #[account(
-        mut, 
-        constraint = authority.key() == Pubkey::from_str("FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG").unwrap(), 
+        mut,
+        constraint = authority.key() == Pubkey::from_str("FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG").unwrap()
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
@@ -132,18 +141,12 @@ pub struct ApproveVehicle<'info> {
 #[derive(Accounts)]
 pub struct SetStart<'info> {
     #[account(
-        mut, 
-        constraint = authority.key() == vehicle.owner_address, 
+        mut,
+        constraint = authority.key() == vehicle.owner_address
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
-}
-
-#[derive(Accounts)]
-pub struct AllUsers<'info> {
-    #[account(mut)]
-    pub vehicle: Account<'info, VehicleData>,
 }
 
 #[derive(Accounts)]
@@ -151,12 +154,14 @@ pub struct CreateBid<'info> {
     #[account
     (
         mut,
-        constraint = vehicle.is_start == true,
-        constraint = authority.key() != vehicle.owner_address
+        constraint = vehicle.is_start && authority.key() != vehicle.owner_address
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
+    #[account(mut)]
+    /// CHECK:` doc comment explaining why no checks through types are necessary
+    pub refund_account: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -165,8 +170,10 @@ pub struct WithdrawBid<'info> {
     #[account
     (
         mut,
-        constraint = vehicle.is_start == true,
-        constraint = authority.key() != vehicle.owner_address
+        constraint = vehicle.is_start
+            && authority.key() != vehicle.owner_address
+            && !vehicle.bids.is_empty()
+            && vehicle.bids.last().map_or(true, |last_bid| !last_bid.is_withdrawn &&  last_bid.bidder == authority.key())
     )]
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
@@ -208,5 +215,5 @@ pub struct Bid {
     index: u32,
     bidder: Pubkey,
     quantity: f64,
-    is_withdrawed: bool,
+    is_withdrawn: bool,
 }
