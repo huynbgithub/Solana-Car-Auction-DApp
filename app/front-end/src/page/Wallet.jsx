@@ -13,7 +13,7 @@ export default function Wallet() {
                     <tbody>
                         <tr>
                             <th>Address</th>
-                            <td>{account.toString()}</td>
+                            <td>{account && account.toString()}</td>
                         </tr>
                         <tr>
                             <th>Balance</th>
