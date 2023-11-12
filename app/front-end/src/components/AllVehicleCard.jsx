@@ -14,7 +14,7 @@ const AllVehicleCard = (props) => {
 
     return (
         <>
-            {account == null || (props.data.account.isApproved && props.data.account.ownerAddress.toString() != account.toString()) ?
+            {props.data.account.isApproved && account == null || (props.data.account.isApproved && props.data.account.ownerAddress.toString() != account.toString()) ?
                 <div className="col-3 mt-3" >
                     <Card className=''>
                         < Card.Img style={{ height: 200 }

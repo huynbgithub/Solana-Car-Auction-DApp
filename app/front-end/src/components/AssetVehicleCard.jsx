@@ -32,7 +32,7 @@ const AssetVehicleCard = (props) => {
 
     return (
         <>
-            {props.data.account.ownerAddress.toString() == account.toString() ?
+            {account != null && props.data.account.ownerAddress.toString() == account.toString() ?
                 <div className="col-3 mt-3" >
                     <Card className=''>
                         <Card.Img style={{ height: 200 }} variant="top" src={props.data.account.vehicleImages[0]} />

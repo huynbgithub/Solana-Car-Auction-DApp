@@ -110,6 +110,28 @@ pub mod vehicle_factory {
         }
         Ok(())
     }
+
+    pub fn end_auction(ctx: Context<EndAuction>) -> Result<()> {
+        let vehicle = &mut ctx.accounts.vehicle;
+
+        let owner = &mut ctx.accounts.owner;
+
+        if let Some(last_bid) = vehicle.bids.last_mut() {
+            let new_owner_address = last_bid.bidder;
+            let quantity = last_bid.quantity;
+
+            **vehicle.to_account_info().try_borrow_mut_lamports()? -=
+                (quantity * 1000000000.0) as u64;
+            **owner.to_account_info().try_borrow_mut_lamports()? +=
+                (quantity * 1000000000.0) as u64;
+
+            vehicle.owner_address = new_owner_address;
+            vehicle.is_start = false;
+            vehicle.bids.clear();
+            vehicle.bids_size = 0;
+        }
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -178,6 +200,22 @@ pub struct WithdrawBid<'info> {
     pub vehicle: Account<'info, VehicleData>,
     #[account(mut)]
     pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct EndAuction<'info> {
+    #[account
+    (
+        mut,
+        constraint = vehicle.is_start
+            && owner.key() == vehicle.owner_address
+            && !vehicle.bids.is_empty()
+            && vehicle.bids.last().map_or(true, |last_bid| !last_bid.is_withdrawn)
+    )]
+    pub vehicle: Account<'info, VehicleData>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 

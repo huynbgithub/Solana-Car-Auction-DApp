@@ -33,7 +33,7 @@ const Detail = () => {
       const approved = await data.isApproved
       setApproved(approved);
 
-      const isOwner = await account.toString() == owner
+      const isOwner = await (account && account.toString() == owner)
       setIsOwner(isOwner)
     }
   }
@@ -153,67 +153,61 @@ const Detail = () => {
                 : <div> </div>}
               {account != "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" && isOwner && data?.isStart ? <div className='d-flex float-end'>
                 <Button variant='danger'
-                // onClick={
-                // async () => {
-                //   const txHash = await submitAuction(
-                //     web3,
-                //     address,
-                //     account)
-                //   try {
-                //     enableShow({
-                //   hasShow: true,
-                //   variant: 'success',
-                //   content: <div>
-                //     {txHash
-                //   ? <>A bid has been withdrawn. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
-                //   : 'Transaction failed'
-                // }
-                //   </div>
-                // })
-                //   } catch (e) {
-                //     console.log(e)
-                //   }
-
-                //   const data = await getVehicleData(address)
-                //   setData(data)
-
-                //   const owner = await getOwner(address)
-                //   setOwner(owner)
-
-                //   const bids = await getBids(address)
-                //   setBids(bids)
-                // }
-                // }
+                  onClick={
+                    async () => {
+                      const txHash = await program.methods
+                        .endAuction()
+                        .accounts({
+                          vehicle: address,
+                          owner: account
+                        })
+                        .rpc().catch(error => console.log(error))
+                      try {
+                        enableShow({
+                          hasShow: true,
+                          variant: 'success',
+                          content: <div>
+                            {txHash
+                              ? <>An auction has been ended. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                              : 'Transaction failed'
+                            }
+                          </div>
+                        })
+                      } catch (e) {
+                        console.log(e)
+                      }
+                    }
+                  }
                 > End Auction </Button>
               </div> : <div> </div>}
               {account == "FRApYbTTgPsK3xsHKBPasV83VzZt6Wdmkh6o9yPztBfG" && !approved ?
                 <div className='d-flex float-end'>
                   <Button variant='success'
                     onClick={async () => {
-                      // const txHash = 
-                      await program.methods
-                        .approveVehicle()
-                        .accounts({
-                          vehicle: address,
-                          authority: account,
-                        })
-                        .rpc()
+                      const txHash =
+                        await program.methods
+                          .approveVehicle()
+                          .accounts({
+                            vehicle: address,
+                            authority: account,
+                          })
+                          .rpc().catch(error => console.log(error))
 
                       setApproved(true);
-                      // try {
-                      //   enableShow({
-                      //   hasShow: true,
-                      //   variant: 'success',
-                      //   content: <div>
-                      // {txHash
-                      //   ? <>A bid has been withdrawn. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
-                      //   : 'Transaction failed'
-                      // }
-                      //   </div>
-                      // })
-                      // } catch (e) {
-                      //   console.log(e)
-                      // }
+                      try {
+                        enableShow({
+                          hasShow: true,
+                          variant: 'success',
+                          content: <div>
+                            {txHash
+                              ? <>A car has been approved. Transaction hash: < ScopeReference hexString={txHash} type='transaction' /></>
+                              : 'Transaction failed'
+                            }
+                          </div>
+                        })
+                      } catch (e) {
+                        console.log(e)
+                      }
                     }
                     }
                   > Approve </Button>
