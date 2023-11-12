@@ -29,6 +29,16 @@ export default function Navbar() {
 
     const onConnect = async () => {
         try {
+            const connection = new Connection(network, "processed");
+            const provider = new anchor.AnchorProvider(
+                connection,
+                window.solana,
+                "processed"
+            )
+
+            const program = new anchor.Program(idl, programID, provider)
+
+            await setProgram(program)
 
             const currentProvider = detectCurrentProvider();
 
@@ -40,23 +50,10 @@ export default function Navbar() {
 
                 await setAccount(account);
 
-                const connection = new Connection(network, "processed");
-
                 const lamportBalance = await connection.getBalance(account);
                 const balance = lamportBalance / 1000000000;
 
                 await setBalance(balance);
-
-                const provider = new anchor.AnchorProvider(
-                    connection,
-                    window.solana,
-                    "processed"
-                )
-
-                const program = new anchor.Program(idl, programID, provider)
-
-                await setProgram(program)
-
             }
 
         } catch (err) {
