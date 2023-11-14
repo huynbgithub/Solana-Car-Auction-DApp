@@ -9,25 +9,32 @@ import { ScopeReference } from './Utils'
 const RegisterAuctionModal = (props) => {
     const { program } = useContext(Web3Context);
     const { account } = useContext(Web3Context);
+    const { balance } = useContext(Web3Context);
 
     const [show, setShow] = useState(false)
-    // const [nearestUnwithdrawnBid, setNearestUnwithdrawnBid] = useState(null)
+    const [nearestUnwithdrawnBid, setNearestUnwithdrawnBid] = useState(null)
     const handleClose = () => setShow(false)
     const handleShow = () => {
         setShow(true)
         formik.resetForm()
     }
 
-    // useEffect(() => {
-    //     if (show) {
-    //         const handleEffect = async () => {
-    //             const nearestUnwithdrawnBid = await findNearestUnwithdrawnBid(props.contractAddress)
-    //             console.log(nearestUnwithdrawnBid)
-    //             setNearestUnwithdrawnBid(nearestUnwithdrawnBid)
-    //         }
-    //         handleEffect()
-    //     }
-    // }, [show])
+    const handleEffect = async () => {
+        if (program) {
+            const data = await program.account.vehicleData.fetch(props.address).catch(error => console.log(error));
+            const bids = data.bids
+            if (bids) {
+                const nearestUnwithdrawnBid = bids[bids.length - 1]
+                setNearestUnwithdrawnBid(nearestUnwithdrawnBid)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (show) {
+            handleEffect()
+        }
+    }, [show])
 
     const formik = useFormik({
         initialValues: {
@@ -36,22 +43,19 @@ const RegisterAuctionModal = (props) => {
         validationSchema: Yup.object({
             quantity: Yup.number()
                 .min(
-                    // nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
-                    //     ? (
-                    props.startingPrice
-                    //      / exponent)
-                    // : (Math.round(
-                    //     ((nearestUnwithdrawnBid).quantity
-                    //         / exponent + 0.1 + Number.EPSILON) * 100)) / 100
+                    nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
+                        ?
+                        props.startingPrice
+                        :
+                        nearestUnwithdrawnBid.quantity
                     ,
-                    // nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
-                    //     ? 
-                    'The quantity must equal or exceed the starting price'
-
-                    // : 'New quantity must be greater than the previous at least 0.1 SOL'
+                    nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
+                        ?
+                        'The quantity must equal or exceed the starting price'
+                        : 'New quantity must be greater than the previous'
                 )
-                // .max(Math.round((Number(balance) - 0.1) * 100) / 100,
-                //     'The balance must be greater than the quantity at least 0.1 SOL')
+                .max(balance,
+                    'The balance must be greater than the quantity')
                 .required('Quantity is required')
         }),
         onSubmit: values => {
@@ -122,16 +126,16 @@ const RegisterAuctionModal = (props) => {
                             ) : null}
                         </div>
                         <div>
-                            {/* {nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
-                                ?  */}
-                            <div>
-                                <b>Starting Price: </b> {props.startingPrice} SOL
-                            </div>
-                            {/* :
+                            {nearestUnwithdrawnBid == null || (nearestUnwithdrawnBid).isWithdrawn
+                                ?
                                 <div>
-                                    <b>Previous Quantity: </b> {((nearestUnwithdrawnBid).quantity) / exponent} SOL
-                                </div> 
-                            }*/}
+                                    <b>Starting Price: </b> {props.startingPrice} SOL
+                                </div>
+                                :
+                                <div>
+                                    <b>Previous Quantity: </b> {nearestUnwithdrawnBid.quantity} SOL
+                                </div>
+                            }
 
                         </div>
                     </Modal.Body>
